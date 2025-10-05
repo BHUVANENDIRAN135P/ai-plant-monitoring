@@ -1,12 +1,71 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
+import { Hero } from "@/components/Hero";
+import { Dashboard } from "@/components/Dashboard";
+import { DiseaseDetection } from "@/components/DiseaseDetection";
+import { Button } from "@/components/ui/button";
+import { Github, Heart } from "lucide-react";
+import { startMockDataGeneration } from "@/utils/mockSensorData";
 
 const Index = () => {
+  // Start generating mock sensor data on component mount (for demo)
+  useEffect(() => {
+    const cleanup = startMockDataGeneration();
+    return cleanup;
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <Heart className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <span className="font-bold text-xl text-foreground">PlantGuard AI</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" asChild>
+              <a href="#dashboard">Dashboard</a>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <a href="#detection">Detection</a>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <Github className="w-4 h-4 mr-2" />
+                GitHub
+              </a>
+            </Button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main>
+        <Hero />
+        <Dashboard />
+        <div id="detection">
+          <DiseaseDetection />
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-primary text-primary-foreground py-12 px-4">
+        <div className="container mx-auto text-center">
+          <div className="mb-4">
+            <h3 className="text-2xl font-bold mb-2">Smart Plant Health Monitor</h3>
+            <p className="text-primary-foreground/80">
+              Empowering farmers with AI-powered precision agriculture
+            </p>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-sm text-primary-foreground/70">
+            <span>Built with</span>
+            <Heart className="w-4 h-4 text-secondary" />
+            <span>using Lovable Cloud & AI</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
