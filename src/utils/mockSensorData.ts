@@ -1,10 +1,32 @@
 import { supabase } from "@/integrations/supabase/client";
 
-// Utility to generate mock sensor data for demo purposes
+// State to maintain realistic sensor values with gradual changes
+let lastTemperature = 25;
+let lastHumidity = 60;
+let lastSoilMoisture = 55;
+
+// Utility to generate realistic sensor data with gradual changes
 export const generateMockSensorData = async () => {
-  const temperature = (Math.random() * 15 + 18).toFixed(2); // 18-33°C
-  const humidity = (Math.random() * 40 + 40).toFixed(2);    // 40-80%
-  const soil_moisture = (Math.random() * 50 + 30).toFixed(2); // 30-80%
+  const hour = new Date().getHours();
+  
+  // Temperature varies with time of day (cooler at night, warmer during day)
+  const baseTemp = 20 + Math.sin((hour - 6) * Math.PI / 12) * 8; // 12-28°C base
+  const tempChange = (Math.random() - 0.5) * 2; // ±1°C change
+  lastTemperature = Math.max(15, Math.min(35, lastTemperature * 0.7 + (baseTemp + tempChange) * 0.3));
+  
+  // Humidity inversely related to temperature (higher at night, lower during day)
+  const baseHumidity = 70 - Math.sin((hour - 6) * Math.PI / 12) * 20; // 50-90% base
+  const humidityChange = (Math.random() - 0.5) * 5; // ±2.5% change
+  lastHumidity = Math.max(30, Math.min(95, lastHumidity * 0.8 + (baseHumidity + humidityChange) * 0.2));
+  
+  // Soil moisture decreases slowly during day, can increase with "watering events"
+  const wateringEvent = Math.random() > 0.95; // 5% chance of watering
+  const moistureChange = wateringEvent ? 15 : (Math.random() - 0.6) * 3; // Gradual decrease or watering
+  lastSoilMoisture = Math.max(20, Math.min(85, lastSoilMoisture + moistureChange));
+  
+  const temperature = lastTemperature.toFixed(2);
+  const humidity = lastHumidity.toFixed(2);
+  const soil_moisture = lastSoilMoisture.toFixed(2);
 
   const { error } = await supabase.from('sensor_readings').insert({
     temperature: parseFloat(temperature),
