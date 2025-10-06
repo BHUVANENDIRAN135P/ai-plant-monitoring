@@ -3,7 +3,7 @@ import { Hero } from "@/components/Hero";
 import { Dashboard } from "@/components/Dashboard";
 import { DiseaseDetection } from "@/components/DiseaseDetection";
 import { Button } from "@/components/ui/button";
-import { Github, Heart } from "lucide-react";
+import { Heart, Bell } from "lucide-react";
 import { startMockDataGeneration } from "@/utils/mockSensorData";
 
 const Index = () => {
@@ -32,9 +32,9 @@ const Index = () => {
               <a href="#detection">Detection</a>
             </Button>
             <Button variant="outline" size="sm" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
-                GitHub
+              <a href="#dashboard">
+                <Bell className="w-4 h-4 mr-2" />
+                Alerts
               </a>
             </Button>
           </div>
