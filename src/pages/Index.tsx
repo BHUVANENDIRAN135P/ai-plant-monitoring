@@ -22,7 +22,7 @@ const Index = () => {
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Heart className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-bold text-xl text-foreground">PlantGuard AI</span>
+            <span className="font-bold text-xl text-foreground">AI PLANT MONITORING</span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild>
@@ -54,15 +54,10 @@ const Index = () => {
       <footer className="bg-primary text-primary-foreground py-12 px-4">
         <div className="container mx-auto text-center">
           <div className="mb-4">
-            <h3 className="text-2xl font-bold mb-2">Smart Plant Health Monitor</h3>
+            <h3 className="text-2xl font-bold mb-2">AI PLANT MONITORING</h3>
             <p className="text-primary-foreground/80">
               Empowering farmers with AI-powered precision agriculture
             </p>
-          </div>
-          <div className="flex items-center justify-center gap-2 text-sm text-primary-foreground/70">
-            <span>Built with</span>
-            <Heart className="w-4 h-4 text-secondary" />
-            <span>using Lovable Cloud & AI</span>
           </div>
         </div>
       </footer>
