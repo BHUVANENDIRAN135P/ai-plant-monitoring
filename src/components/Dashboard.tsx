@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { SensorChart } from "./SensorChart";
 import { AlertsList } from "./AlertsList";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SensorReading {
   temperature: number;
@@ -14,10 +15,13 @@ interface SensorReading {
 }
 
 export const Dashboard = () => {
+  const { user } = useAuth();
   const [latestReading, setLatestReading] = useState<SensorReading | null>(null);
   const [historicalData, setHistoricalData] = useState<SensorReading[]>([]);
 
   useEffect(() => {
+    if (!user) return;
+    
     // Fetch initial data
     fetchLatestReading();
     fetchHistoricalData();
@@ -30,7 +34,8 @@ export const Dashboard = () => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'sensor_readings'
+          table: 'sensor_readings',
+          filter: `user_id=eq.${user.id}`
         },
         (payload) => {
           const newReading = payload.new as SensorReading;
@@ -43,12 +48,15 @@ export const Dashboard = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [user]);
 
   const fetchLatestReading = async () => {
+    if (!user) return;
+    
     const { data } = await supabase
       .from('sensor_readings')
       .select('*')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(1)
       .single();
@@ -57,9 +65,12 @@ export const Dashboard = () => {
   };
 
   const fetchHistoricalData = async () => {
+    if (!user) return;
+    
     const { data } = await supabase
       .from('sensor_readings')
       .select('*')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(20);
     

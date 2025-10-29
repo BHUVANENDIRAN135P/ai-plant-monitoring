@@ -21,6 +21,7 @@ export type Database = {
           id: string
           is_read: boolean | null
           message: string
+          user_id: string | null
           value: number | null
         }
         Insert: {
@@ -29,6 +30,7 @@ export type Database = {
           id?: string
           is_read?: boolean | null
           message: string
+          user_id?: string | null
           value?: number | null
         }
         Update: {
@@ -37,6 +39,7 @@ export type Database = {
           id?: string
           is_read?: boolean | null
           message?: string
+          user_id?: string | null
           value?: number | null
         }
         Relationships: []
@@ -50,6 +53,7 @@ export type Database = {
           image_url: string
           recommendations: string | null
           status: Database["public"]["Enums"]["disease_status"] | null
+          user_id: string | null
         }
         Insert: {
           confidence?: number | null
@@ -59,6 +63,7 @@ export type Database = {
           image_url: string
           recommendations?: string | null
           status?: Database["public"]["Enums"]["disease_status"] | null
+          user_id?: string | null
         }
         Update: {
           confidence?: number | null
@@ -68,6 +73,7 @@ export type Database = {
           image_url?: string
           recommendations?: string | null
           status?: Database["public"]["Enums"]["disease_status"] | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -78,6 +84,7 @@ export type Database = {
           id: string
           soil_moisture: number
           temperature: number
+          user_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -85,6 +92,7 @@ export type Database = {
           id?: string
           soil_moisture: number
           temperature: number
+          user_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -92,6 +100,7 @@ export type Database = {
           id?: string
           soil_moisture?: number
           temperature?: number
+          user_id?: string | null
         }
         Relationships: []
       }

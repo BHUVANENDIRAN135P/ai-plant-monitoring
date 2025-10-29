@@ -3,15 +3,28 @@ import { Hero } from "@/components/Hero";
 import { Dashboard } from "@/components/Dashboard";
 import { DiseaseDetection } from "@/components/DiseaseDetection";
 import { Button } from "@/components/ui/button";
-import { Heart, Bell } from "lucide-react";
+import { Heart, Bell, LogOut } from "lucide-react";
 import { startMockDataGeneration } from "@/utils/mockSensorData";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Index = () => {
+  const { signOut, user } = useAuth();
+  
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success('Signed out successfully');
+  };
+
   // Start generating mock sensor data on component mount (for demo)
   useEffect(() => {
-    const cleanup = startMockDataGeneration();
-    return cleanup;
-  }, []);
+    if (user) {
+      const { setMockDataUserId } = require("@/utils/mockSensorData");
+      setMockDataUserId(user.id);
+      const cleanup = startMockDataGeneration();
+      return cleanup;
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -36,6 +49,10 @@ const Index = () => {
                 <Bell className="w-4 h-4 mr-2" />
                 Alerts
               </a>
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleSignOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
             </Button>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Alert {
   id: string;
@@ -16,9 +17,12 @@ interface Alert {
 }
 
 export const AlertsList = () => {
+  const { user } = useAuth();
   const [alerts, setAlerts] = useState<Alert[]>([]);
 
   useEffect(() => {
+    if (!user) return;
+    
     fetchAlerts();
 
     const channel = supabase
@@ -28,7 +32,8 @@ export const AlertsList = () => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'alerts'
+          table: 'alerts',
+          filter: `user_id=eq.${user.id}`
         },
         (payload) => {
           setAlerts(prev => [payload.new as Alert, ...prev]);
@@ -39,12 +44,15 @@ export const AlertsList = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [user]);
 
   const fetchAlerts = async () => {
+    if (!user) return;
+    
     const { data } = await supabase
       .from('alerts')
       .select('*')
+      .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(10);
     

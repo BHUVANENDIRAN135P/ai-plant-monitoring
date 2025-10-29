@@ -1,5 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 
+let currentUserId: string | null = null;
+
+export const setMockDataUserId = (userId: string) => {
+  currentUserId = userId;
+};
+
 // State to maintain realistic sensor values with gradual changes
 let lastTemperature = 25;
 let lastHumidity = 60;
@@ -28,7 +34,13 @@ export const generateMockSensorData = async () => {
   const humidity = lastHumidity.toFixed(2);
   const soil_moisture = lastSoilMoisture.toFixed(2);
 
+  if (!currentUserId) {
+    console.log('No user ID set for mock data generation');
+    return null;
+  }
+
   const { error } = await supabase.from('sensor_readings').insert({
+    user_id: currentUserId,
     temperature: parseFloat(temperature),
     humidity: parseFloat(humidity),
     soil_moisture: parseFloat(soil_moisture)
@@ -46,6 +58,7 @@ export const generateMockSensorData = async () => {
 
   if (temp < 15 || temp > 35) {
     await supabase.from('alerts').insert({
+      user_id: currentUserId,
       alert_type: 'temperature',
       message: `Temperature ${temp < 15 ? 'too low' : 'too high'}: ${temperature}°C`,
       value: temp,
@@ -55,6 +68,7 @@ export const generateMockSensorData = async () => {
 
   if (hum < 40 || hum > 80) {
     await supabase.from('alerts').insert({
+      user_id: currentUserId,
       alert_type: 'humidity',
       message: `Humidity ${hum < 40 ? 'too low' : 'too high'}: ${humidity}%`,
       value: hum,
@@ -64,6 +78,7 @@ export const generateMockSensorData = async () => {
 
   if (moist < 30 || moist > 80) {
     await supabase.from('alerts').insert({
+      user_id: currentUserId,
       alert_type: 'soil_moisture',
       message: `Soil moisture ${moist < 30 ? 'too low' : 'too high'}: ${soil_moisture}%`,
       value: moist,

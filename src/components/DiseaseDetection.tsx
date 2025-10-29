@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import plantHealthyImage from "@/assets/plant-healthy.jpg";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DetectionResult {
   status: 'healthy' | 'disease_detected';
@@ -16,6 +17,7 @@ interface DetectionResult {
 }
 
 export const DiseaseDetection = () => {
+  const { user } = useAuth();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -104,6 +106,7 @@ export const DiseaseDetection = () => {
         
         // Store result in database
         await supabase.from('plant_health_records').insert({
+          user_id: user?.id,
           image_url: previewUrl,
           status: data.result.status === 'healthy' ? 'healthy' : 'disease_detected',
           disease_name: data.result.disease_name,
@@ -114,6 +117,7 @@ export const DiseaseDetection = () => {
         // Create alert if disease detected
         if (data.result.status === 'disease_detected') {
           await supabase.from('alerts').insert({
+            user_id: user?.id,
             alert_type: 'disease',
             message: `Disease detected: ${data.result.disease_name}`,
             value: data.result.confidence,
