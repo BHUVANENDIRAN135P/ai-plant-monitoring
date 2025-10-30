@@ -4,7 +4,7 @@ import { Dashboard } from "@/components/Dashboard";
 import { DiseaseDetection } from "@/components/DiseaseDetection";
 import { Button } from "@/components/ui/button";
 import { Heart, Bell, LogOut } from "lucide-react";
-import { startMockDataGeneration } from "@/utils/mockSensorData";
+import { startMockDataGeneration, setMockDataUserId } from "@/utils/mockSensorData";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -19,7 +19,6 @@ const Index = () => {
   // Start generating mock sensor data on component mount (for demo)
   useEffect(() => {
     if (user) {
-      const { setMockDataUserId } = require("@/utils/mockSensorData");
       setMockDataUserId(user.id);
       const cleanup = startMockDataGeneration();
       return cleanup;
