@@ -24,7 +24,7 @@ export const SensorChart = ({ data }: SensorChartProps) => {
   return (
     <Card className="shadow-medium border-border">
       <CardHeader>
-        <CardTitle className="text-foreground">Sensor Trends</CardTitle>
+        <CardTitle className="text-foreground">Plant Sensors</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
