@@ -27,7 +27,7 @@ export const SensorChart = ({ data }: SensorChartProps) => {
         <CardTitle className="text-foreground">Plant Sensors</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={350}>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis 
@@ -46,27 +46,43 @@ export const SensorChart = ({ data }: SensorChartProps) => {
                 borderRadius: '8px'
               }}
             />
-            <Legend />
+            <Legend 
+              wrapperStyle={{ paddingTop: '10px' }}
+              formatter={(value: string) => {
+                const labels: Record<string, string> = {
+                  temperature: 'Temperature (°C)',
+                  humidity: 'Humidity (%)',
+                  moisture: 'Soil Moisture (%)',
+                };
+                return <span style={{ color: 'hsl(var(--foreground))' }}>{labels[value] || value}</span>;
+              }}
+            />
             <Line 
               type="monotone" 
               dataKey="temperature" 
-              stroke="hsl(var(--destructive))" 
-              strokeWidth={2}
-              dot={false}
+              name="temperature"
+              stroke="#ef4444"
+              strokeWidth={2.5}
+              dot={{ r: 3, fill: '#ef4444' }}
+              activeDot={{ r: 5 }}
             />
             <Line 
               type="monotone" 
               dataKey="humidity" 
-              stroke="hsl(var(--primary))" 
-              strokeWidth={2}
-              dot={false}
+              name="humidity"
+              stroke="#3b82f6"
+              strokeWidth={2.5}
+              dot={{ r: 3, fill: '#3b82f6' }}
+              activeDot={{ r: 5 }}
             />
             <Line 
               type="monotone" 
               dataKey="moisture" 
-              stroke="hsl(var(--secondary))" 
-              strokeWidth={2}
-              dot={false}
+              name="moisture"
+              stroke="#f59e0b"
+              strokeWidth={2.5}
+              dot={{ r: 3, fill: '#f59e0b' }}
+              activeDot={{ r: 5 }}
             />
           </LineChart>
         </ResponsiveContainer>
