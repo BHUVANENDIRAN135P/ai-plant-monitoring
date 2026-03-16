@@ -112,8 +112,12 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* Sensor Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Plant Image and Sensor Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-1">
+            <PlantImageUpload />
+          </div>
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="shadow-medium hover:shadow-strong transition-all border-border">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Temperature</CardTitle>
