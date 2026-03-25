@@ -23,9 +23,9 @@ export const Dashboard = () => {
   useEffect(() => {
     if (!user) return;
     
-    // Fetch initial data
     fetchLatestReading();
     fetchHistoricalData();
+    fetchLatestPlantImage();
 
     // Subscribe to real-time updates
     const channel = supabase
