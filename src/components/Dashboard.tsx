@@ -177,7 +177,6 @@ export const Dashboard = () => {
               )}
             </CardContent>
           </Card>
-          </div>
         </div>
 
         {/* Charts and Alerts */}
