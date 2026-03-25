@@ -18,6 +18,7 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const [latestReading, setLatestReading] = useState<SensorReading | null>(null);
   const [historicalData, setHistoricalData] = useState<SensorReading[]>([]);
+  const [plantImageUrl, setPlantImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
