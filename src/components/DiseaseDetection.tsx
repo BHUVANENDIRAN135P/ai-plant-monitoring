@@ -95,6 +95,21 @@ export const DiseaseDetection = () => {
       reader.onload = async () => {
         const base64Image = reader.result as string;
 
+        // Upload image to storage for persistent URL
+        let storedImageUrl = previewUrl;
+        if (user && selectedImage) {
+          const fileName = `${user.id}/${Date.now()}-analysis.${selectedImage.name.split('.').pop()}`;
+          const { error: uploadError } = await supabase.storage
+            .from('plant-images')
+            .upload(fileName, selectedImage, { upsert: true });
+          if (!uploadError) {
+            const { data: urlData } = supabase.storage
+              .from('plant-images')
+              .getPublicUrl(fileName);
+            storedImageUrl = urlData.publicUrl;
+          }
+        }
+
         // Call edge function for AI analysis
         const { data, error } = await supabase.functions.invoke('analyze-plant-disease', {
           body: { imageData: base64Image }
@@ -104,10 +119,10 @@ export const DiseaseDetection = () => {
 
         setResult(data.result);
         
-        // Store result in database
+        // Store result in database with persistent image URL
         await supabase.from('plant_health_records').insert({
           user_id: user?.id,
-          image_url: previewUrl,
+          image_url: storedImageUrl,
           status: data.result.status === 'healthy' ? 'healthy' : 'disease_detected',
           disease_name: data.result.disease_name,
           confidence: data.result.confidence,
