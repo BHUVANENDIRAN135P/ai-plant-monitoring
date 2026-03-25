@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Thermometer, Droplets, Sprout, TrendingUp, Leaf } from "lucide-react";
+import { Thermometer, Droplets, Sprout, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { SensorChart } from "./SensorChart";
 import { AlertsList } from "./AlertsList";
@@ -18,14 +18,14 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const [latestReading, setLatestReading] = useState<SensorReading | null>(null);
   const [historicalData, setHistoricalData] = useState<SensorReading[]>([]);
-  const [plantImageUrl, setPlantImageUrl] = useState<string | null>(null);
+  
 
   useEffect(() => {
     if (!user) return;
     
     fetchLatestReading();
     fetchHistoricalData();
-    fetchLatestPlantImage();
+    
 
     // Subscribe to real-time updates
     const channel = supabase
@@ -78,17 +78,6 @@ export const Dashboard = () => {
     if (data) setHistoricalData(data.reverse());
   };
 
-  const fetchLatestPlantImage = async () => {
-    if (!user) return;
-    const { data } = await supabase
-      .from('plant_health_records')
-      .select('image_url')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    if (data?.image_url) setPlantImageUrl(data.image_url);
-  };
 
   const getStatusColor = (value: number, type: 'temp' | 'humidity' | 'moisture') => {
     if (type === 'temp') {
@@ -124,34 +113,8 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* Plant Image and Sensor Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-1">
-            <Card className="shadow-medium border-border overflow-hidden h-full">
-              <CardContent className="p-0 h-full">
-                {plantImageUrl ? (
-                  <div className="relative h-full min-h-[260px]">
-                    <img
-                      src={plantImageUrl}
-                      alt="Analyzed plant"
-                      className="w-full h-full object-cover min-h-[260px]"
-                    />
-                    <div className="absolute bottom-3 left-3 bg-background/80 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1.5">
-                      <Leaf className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-medium text-foreground">Your Plant</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full min-h-[260px] text-muted-foreground">
-                    <Leaf className="w-10 h-10 mb-3 opacity-40" />
-                    <span className="text-sm font-medium">No plant analyzed yet</span>
-                    <span className="text-xs mt-1">Use Disease Detection below to analyze a plant</span>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Sensor Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card className="shadow-medium hover:shadow-strong transition-all border-border">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Temperature</CardTitle>
@@ -214,7 +177,6 @@ export const Dashboard = () => {
               )}
             </CardContent>
           </Card>
-          </div>
         </div>
 
         {/* Charts and Alerts */}
