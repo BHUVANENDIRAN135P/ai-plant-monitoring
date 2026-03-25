@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Thermometer, Droplets, Sprout, Bell, TrendingUp } from "lucide-react";
-import { PlantImageUpload } from "./PlantImageUpload";
+import { Thermometer, Droplets, Sprout, TrendingUp, Leaf } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { SensorChart } from "./SensorChart";
 import { AlertsList } from "./AlertsList";
