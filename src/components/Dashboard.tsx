@@ -78,17 +78,6 @@ export const Dashboard = () => {
     if (data) setHistoricalData(data.reverse());
   };
 
-  const fetchLatestPlantImage = async () => {
-    if (!user) return;
-    const { data } = await supabase
-      .from('plant_health_records')
-      .select('image_url')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    if (data?.image_url) setPlantImageUrl(data.image_url);
-  };
 
   const getStatusColor = (value: number, type: 'temp' | 'humidity' | 'moisture') => {
     if (type === 'temp') {
