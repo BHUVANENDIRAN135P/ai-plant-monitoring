@@ -127,7 +127,29 @@ export const Dashboard = () => {
         {/* Plant Image and Sensor Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <div className="lg:col-span-1">
-            <PlantImageUpload />
+            <Card className="shadow-medium border-border overflow-hidden h-full">
+              <CardContent className="p-0 h-full">
+                {plantImageUrl ? (
+                  <div className="relative h-full min-h-[260px]">
+                    <img
+                      src={plantImageUrl}
+                      alt="Analyzed plant"
+                      className="w-full h-full object-cover min-h-[260px]"
+                    />
+                    <div className="absolute bottom-3 left-3 bg-background/80 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+                      <Leaf className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium text-foreground">Your Plant</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full min-h-[260px] text-muted-foreground">
+                    <Leaf className="w-10 h-10 mb-3 opacity-40" />
+                    <span className="text-sm font-medium">No plant analyzed yet</span>
+                    <span className="text-xs mt-1">Use Disease Detection below to analyze a plant</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
           <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="shadow-medium hover:shadow-strong transition-all border-border">
