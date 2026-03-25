@@ -25,7 +25,7 @@ export const Dashboard = () => {
     
     fetchLatestReading();
     fetchHistoricalData();
-    fetchLatestPlantImage();
+    
 
     // Subscribe to real-time updates
     const channel = supabase
